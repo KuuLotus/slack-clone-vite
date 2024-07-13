@@ -1,16 +1,14 @@
-import { signInWithGoogle } from "@/features/auth/auth";
-import { getUser } from "@/features/user/userAPI";
+import { useAppDispatch } from "@/app/hooks";
+import { googleSignInAndUserSetup, login } from "@/features/user/userSlice";
 
 const Login = () => {
-  const getUserInfo = async () => {
-    try {
-      const user = await getUser("pzx7QiIyqQi5kgAWUgEj");
-      if (user) {
-        console.log(user);
+  const dispatch = useAppDispatch();
+  const loginWithGoogle = () => {
+    googleSignInAndUserSetup().then((userId) => {
+      if (userId) {
+        dispatch(login(userId));
       }
-    } catch (e) {
-      console.error(e);
-    }
+    });
   };
 
   return (
@@ -25,7 +23,7 @@ const Login = () => {
           <div className="flex items-center justify-center">
             <button
               className="bg-purple-600 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              onClick={getUserInfo}
+              onClick={loginWithGoogle}
             >
               ログイン
             </button>
