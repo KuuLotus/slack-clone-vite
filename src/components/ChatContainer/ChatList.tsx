@@ -2,9 +2,11 @@ import { subscribeChannels } from "@/features/channel/channelAPI";
 import { ChannelRef } from "@/types/Channel";
 import { useEffect, useState } from "react";
 import ChannelCell from "./ChannelCell";
+import ChannelAddModal from "./ChannelAddModal";
 
 const ChatList = () => {
   const [channelRefs, setChannelRefs] = useState<ChannelRef[]>([]);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   useEffect(() => {
     const unsubscribe = subscribeChannels((channelRefs) => {
@@ -24,9 +26,15 @@ const ChatList = () => {
         ))}
       </div>
       <div className="px-4 py-2">
-        <button className="text-gray-300 hover:text-white">
+        <button
+          className="text-gray-300 hover:text-white"
+          onClick={() => setShowModal(true)}
+        >
           + チャンネルを追加する
         </button>
+        {showModal && (
+          <ChannelAddModal handleCloseModal={() => setShowModal(false)} />
+        )}
       </div>
     </div>
   );
